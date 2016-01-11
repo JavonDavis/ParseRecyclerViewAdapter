@@ -58,7 +58,7 @@ public class DefaultViewHolder extends RecyclerView.ViewHolder{
 Then simply specify that ViewHolder along with ParseObject or a child of this class as Type Parameter to the ParseRecyclerQueryAdapter. Within the constructor you will need to pass in a context, the class of the ViewHolder and the name of the Class on Parse you wish to use.
 
 ```Java
-ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class,"Posts");
+ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> adapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class,"ParseClass");
 ```
 
 That's it! The data will be loaded from parse into the RecyclerView.
