@@ -19,7 +19,7 @@ to your project dependencies and run `gradle build` or `gradle assemble`.
 
 #### As a library project
 
-Download the source code and import it as a library project in Eclipse. The project is available in the folder **library**. For more information on how to do this, read [here](http://developer.android.com/tools/projects/index.html#LibraryProjects).
+Download the source code and import it as a library project in Eclipse. The project is available in the folder **parserecyclerviewadapter**. For more information on how to do this, read [here](http://developer.android.com/tools/projects/index.html#LibraryProjects).
 
 ## Usage
 
