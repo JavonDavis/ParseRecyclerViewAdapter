@@ -1,4 +1,4 @@
-# ParseRecyclerViewAdapter
+# ParseRecyclerViewAdapter https://travis-ci.org/JA-VON/ParseRecyclerViewAdapter.svg?branch=master
 
 A version of ParseQueryAdapter for RecyclerView.
 Load data directly from parse into the RecyclerView using the convenience methods provided similar to those in ParseQueryAdapter.
