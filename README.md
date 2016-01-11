@@ -5,7 +5,7 @@ Load data directly from parse into the RecyclerView using the convenience method
 
 ## Installing
 
-There are two ways to install Sugar:
+There are two ways to install ParseRecyclerViewAdapter:
 
 #### As a Gradle dependency
 
