@@ -23,7 +23,7 @@ Download the source code and import it as a library project in Eclipse. The proj
 
 ## Usage
 
-First you have to create a ViewHolder class that extends RecyclerView.ViewHolder. This class must specify its layout by attaching the @Layout annotation to the class definition and specify the name of field on Parse you want the attached to the specific View of the holder. See an example below.
+First you have to create a ViewHolder class that extends RecyclerView.ViewHolder. This class must specify its layout by attaching the @Layout annotation to the class definition and specify the name of field of the Parse class you want the attached to the specific View of the holder using the @ParseName annotation. See an example below.
 
 ```Java
 package com.javon.example;
