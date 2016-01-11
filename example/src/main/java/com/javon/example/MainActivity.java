@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class
-                ,"Posts"); // change this to your desired class name on parse
+                ,"Posts");
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.items);
 
         mRecyclerView.setHasFixedSize(true);
