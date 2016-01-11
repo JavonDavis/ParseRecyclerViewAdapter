@@ -1,4 +1,4 @@
-package com.javon.parseadapter;
+package com.javon.example;
 
 import android.app.Application;
 

@@ -1,1 +1,1 @@
-include ':app', ':parserecyclerviewadapter'
+include ':example', ':parserecyclerviewadapter'

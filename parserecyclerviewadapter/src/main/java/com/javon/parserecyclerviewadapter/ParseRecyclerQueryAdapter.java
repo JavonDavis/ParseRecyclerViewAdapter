@@ -2,17 +2,10 @@ package com.javon.parserecyclerviewadapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.WeakHashMap;
 
 import com.javon.parserecyclerviewadapter.annotations.Layout;
 import com.javon.parserecyclerviewadapter.annotations.ParseName;
@@ -23,6 +16,11 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.WeakHashMap;
 
 /**
  * @author Javon Davis

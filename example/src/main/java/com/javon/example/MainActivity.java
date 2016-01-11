@@ -1,4 +1,4 @@
-package com.javon.parseadapter;
+package com.javon.example;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +8,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.javon.parserecyclerviewadapter.ParseRecyclerQueryAdapter;
 import com.parse.ParseObject;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mainAdapter);
-
-
 
     }
 
