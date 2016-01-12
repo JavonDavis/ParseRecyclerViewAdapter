@@ -19,6 +19,7 @@ import com.parse.ParseQuery;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -28,43 +29,39 @@ import java.util.WeakHashMap;
  */
 public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> {
 
-    private String className;
-    private Context mContext;
-    private View mView;
-    private Class<V> clazz;
-    private QueryFactory queryFactory;
-    private List<T> objects;
-    private WeakHashMap<Field,String> fields = new WeakHashMap<>();
+    protected Context mContext;
+    protected Class<V> clazz;
+    protected QueryFactory queryFactory;
+    protected List<T> objects;
+    protected WeakHashMap<Field,String> fields = new WeakHashMap<>();
+    protected ParseObject object;
+    protected int objectsPerPage;
+    private List<OnQueryLoadListener<T>> listeners = new ArrayList<>();
+    protected int currentPage;
+    protected boolean hasNextPage;
+    private boolean paginationEnabled = false;
 
     public ParseRecyclerQueryAdapter(Context context, Class<V> clazz,final String className)
     {
-        this.clazz = clazz;
-        this.mContext = context;
-        this.className = className;
-        this.objects = new ArrayList<>();
-        this.queryFactory = new ParseRecyclerQueryAdapter.QueryFactory() {
+        this(context,clazz,new ParseRecyclerQueryAdapter.QueryFactory() {
             public ParseQuery<T> create() {
-                ParseQuery query = ParseQuery.getQuery(ParseRecyclerQueryAdapter.this.className);
+                ParseQuery query = ParseQuery.getQuery(className);
                 query.orderByDescending("createdAt");
                 return query;
             }
-        };
+        });
         if(className == null) {
             throw new RuntimeException("You need to specify a className for the ParseRecyclerQueryAdapter");
         }
     }
 
-    public ParseRecyclerQueryAdapter(Context context, Class<V> clazz,final String className,QueryFactory queryFactory)
+    public ParseRecyclerQueryAdapter(Context context, Class<V> clazz,final QueryFactory queryFactory)
     {
         this.clazz = clazz;
         this.mContext = context;
-        this.className = className;
         this.objects = new ArrayList<>();
         this.queryFactory = queryFactory;
-
-        if(className == null) {
-            throw new RuntimeException("You need to specify a className for the ParseRecyclerQueryAdapter");
-        }
+        this.objectsPerPage = 5;
     }
 
     @Override
@@ -80,14 +77,54 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
         return null;
     }
 
-    private void loadParseData()
+    public void clear() {
+        this.objects.clear();
+        this.notifyDataSetChanged();
+        this.currentPage = 0;
+    }
+
+    private boolean shouldShowPaginationCell() {
+        return this.paginationEnabled && this.objects.size() > 0 && this.hasNextPage;
+    }
+
+    public void loadNextPage() {
+        this.loadParseData(this.currentPage + 1, false);
+    }
+
+    private void loadParseData(final int page, final boolean shouldClear)
     {
         final ParseQuery query = this.queryFactory.create();
+
+        if(this.objectsPerPage > 0 && this.paginationEnabled) {
+            this.setPageOnQuery(page, query);
+        }
+
+        this.notifyOnLoadingListeners();
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List list, ParseException e) {
-                objects.addAll(list);
-                notifyDataSetChanged();
+                if(query.getCachePolicy() != ParseQuery.CachePolicy.CACHE_ONLY || e == null || e.getCode() != 120) {
+                    if(e == null || e.getCode() != 100 && e.getCode() == 120) {
+                        if(list != null) {
+                            ParseRecyclerQueryAdapter.this.currentPage = page;
+                            ParseRecyclerQueryAdapter.this.hasNextPage = list.size() > ParseRecyclerQueryAdapter.this.objectsPerPage;
+                            if(ParseRecyclerQueryAdapter.this.paginationEnabled && ParseRecyclerQueryAdapter.this.hasNextPage)
+                            {
+                                list.remove(ParseRecyclerQueryAdapter.this.objectsPerPage);
+                            }
+
+                            if(shouldClear)
+                            {
+                                ParseRecyclerQueryAdapter.this.objects.clear();
+                            }
+                            ParseRecyclerQueryAdapter.this.objects.addAll(list);
+                            ParseRecyclerQueryAdapter.this.notifyDataSetChanged();
+                        }
+                    } else {
+                        ParseRecyclerQueryAdapter.this.hasNextPage = true;
+                    }
+                    ParseRecyclerQueryAdapter.this.notifyOnLoadedListeners(list,e);
+                }
             }
         });
 
@@ -106,7 +143,7 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
     @Override
     public void onBindViewHolder(V holder, int position) {
 
-        ParseObject object = objects.get(position);
+        object = objects.get(position);
 
         for(Field field: fields.keySet())
         {
@@ -136,13 +173,60 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
     @Override
     public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
         super.registerAdapterDataObserver(observer);
-        loadParseData();
-
+        loadParseData(0,true);
     }
 
     @Override
     public int getItemCount() {
-        return objects.size();
+        int count = this.objects.size();
+        if(this.shouldShowPaginationCell()) {
+            ++count;
+        }
+        return count;
+    }
+
+    public void setPaginationEnabled(boolean paginationEnabled) {
+        this.paginationEnabled = paginationEnabled;
+    }
+
+    protected void setPageOnQuery(int page, ParseQuery<T> query) {
+        query.setLimit(this.objectsPerPage + 1);
+        query.setSkip(page * this.objectsPerPage);
+    }
+
+    public void addOnQueryLoadListener(OnQueryLoadListener<T> listener) {
+        this.listeners.add(listener);
+    }
+
+    public void removeOnQueryLoadListener(OnQueryLoadListener<T> listener) {
+        this.listeners.remove(listener);
+    }
+
+    private void notifyOnLoadingListeners() {
+        Iterator i$ = this.listeners.iterator();
+
+        while(i$.hasNext()) {
+            OnQueryLoadListener listener = (OnQueryLoadListener)i$.next();
+            listener.onLoading();
+        }
+
+    }
+
+    private void notifyOnLoadedListeners(List<T> objects, Exception e) {
+        Iterator i$ = this.listeners.iterator();
+
+        while(i$.hasNext()) {
+            OnQueryLoadListener listener = (OnQueryLoadListener)i$.next();
+            listener.onLoaded(objects, e);
+        }
+
+    }
+
+    /* ==================== Interfaces ==========================*/
+    public interface OnQueryLoadListener<T> {
+        void onLoading();
+
+        void onLoaded(List<T> var1, Exception var2);
     }
 
     public interface QueryFactory<T extends ParseObject> {

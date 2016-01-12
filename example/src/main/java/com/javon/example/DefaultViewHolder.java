@@ -19,8 +19,10 @@ public class DefaultViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         titleView = (TextView) itemView.findViewById(R.id.title_view);
         imageView = (ParseImageView) itemView.findViewById(R.id.imageView);
-
+        staticTitle = (TextView) itemView.findViewById(R.id.staticTitle);
     }
+
+    public TextView staticTitle;
 
     @ParseName("title")
     public TextView titleView;

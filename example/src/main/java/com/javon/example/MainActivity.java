@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.javon.parserecyclerviewadapter.ParseRecyclerQueryAdapter;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,8 +19,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class
-                ,"Posts");
+//        ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class
+//                ,"Posts");
+
+        CustomQueryAdapter mainAdapter = new CustomQueryAdapter(this, DefaultViewHolder.class
+                ,new ParseRecyclerQueryAdapter.QueryFactory() {
+            public ParseQuery<ParseObject> create() {
+                ParseQuery query = ParseQuery.getQuery("Posts");
+                query.orderByDescending("title");
+                return query;
+            }
+        });
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.items);
 
         mRecyclerView.setHasFixedSize(true);
