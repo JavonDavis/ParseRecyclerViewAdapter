@@ -65,7 +65,40 @@ That's it! The data will be loaded from parse into the RecyclerView.
 
 ##Customizations
 
-A full walkthrough of how to use the adapter and customizations will be added.
+By default the query sent out just fetches the data from parse and returns them ordered by the date they were created. If you have more specific needs similarly to the ParseQueryAdapter you need to pass in a QueryFactory, which returns your specific ParseQuery. Example below.
+
+```Java
+ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> adapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class,new ParseRecyclerQueryAdapter.QueryFactory() {
+            public ParseQuery<ParseObject> create() {
+            //build query here
+                ParseQuery query = ParseQuery.getQuery("Posts");
+                query.orderByDescending("title");
+                return query;
+            }
+        });
+```
+
+By default when you use the tag to bind the field to the field on Parse it will simply either set the text or set the ParseImageView, if you have more specific needs you can create an adapter that extends the ParseRecyclerQueryAdater and override the OnBindViewHolder method. Within this method you'll have access to a number of fields from the parent which include objects, which contains a Java List of the ParseObjects and object which will be the current object. See below for an example of a custom adapter using an extra field called staticTitle which has been added to the DefaultViewHolder class.
+
+```Java
+public class CustomQueryAdapter extends ParseRecyclerQueryAdapter<ParseObject, DefaultViewHolder> {
+
+    public CustomQueryAdapter(Context context, Class clazz, String className) {
+        super(context, clazz, className);
+    }
+
+    public CustomQueryAdapter(Context context, Class clazz,QueryFactory queryFactory) {
+        super(context, clazz,queryFactory);
+    }
+
+    @Override
+    public void onBindViewHolder(DefaultViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        holder.staticTitle.setText(object.getString("title").substring(0,2)+"...");
+    }
+}
+```
+The example module contains an application which uses the above mentioned custom adapter, it can be built out for a working example of the adapter.
 
 ## Contributing
 
