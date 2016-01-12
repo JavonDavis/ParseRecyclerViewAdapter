@@ -182,7 +182,6 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
         if(this.shouldShowPaginationCell()) {
             ++count;
         }
-
         return count;
     }
 

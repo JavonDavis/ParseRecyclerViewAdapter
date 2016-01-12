@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.javon.example.MainActivity"
-            android:label="Parse Adapter Test"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

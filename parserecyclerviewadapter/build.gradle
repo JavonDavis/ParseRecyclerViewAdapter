@@ -41,7 +41,7 @@ ext {
     siteUrl = 'https://github.com/JA-VON/ParseRecyclerViewAdapter'
     gitUrl = 'https://github.com/JA-VON/ParseRecyclerViewAdapter'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.4'
 
     developerId = 'javondavis'
     developerName = 'Javon Davis'
