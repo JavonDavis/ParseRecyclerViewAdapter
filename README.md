@@ -61,7 +61,7 @@ Then simply specify that ViewHolder along with ParseObject or a child of this cl
 ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> adapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class,"ParseClass");
 ```
 
-That's it! The data will be loaded from parse into the RecyclerView.
+Then set the adapter to the RecyclerView and that's it! The data will be loaded from parse into the RecyclerView.
 
 ##Customizations
 
