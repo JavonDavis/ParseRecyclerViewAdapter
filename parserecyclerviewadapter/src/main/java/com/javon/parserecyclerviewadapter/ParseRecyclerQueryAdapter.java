@@ -19,9 +19,10 @@ import com.parse.ParseQuery;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.WeakHashMap;
+import java.util.Map;
 
 /**
  * @author Javon Davis
@@ -33,7 +34,7 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
     protected Class<V> clazz;
     protected QueryFactory queryFactory;
     protected List<T> objects;
-    protected WeakHashMap<Field,String> fields = new WeakHashMap<>();
+    protected Map<Field,String> fields = new HashMap<>();
     protected ParseObject object;
     protected int objectsPerPage;
     private List<OnQueryLoadListener<T>> listeners = new ArrayList<>();
@@ -61,7 +62,18 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
         this.mContext = context;
         this.objects = new ArrayList<>();
         this.queryFactory = queryFactory;
-        this.objectsPerPage = 5;
+        this.objectsPerPage = 25;
+
+        for(Field field  : this.clazz.getDeclaredFields())
+        {
+            if (field.isAnnotationPresent(ParseName.class))
+            {
+                ParseName annotation = field.getAnnotation(ParseName.class);
+                field.setAccessible(true);
+                fields.put(field,annotation.value());
+
+            }
+        }
     }
 
     @Override
@@ -134,26 +146,17 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
                                 ParseRecyclerQueryAdapter.this.objects.clear();
                             }
                             ParseRecyclerQueryAdapter.this.objects.addAll(list);
+
                             ParseRecyclerQueryAdapter.this.notifyDataSetChanged();
                         }
                     } else {
                         ParseRecyclerQueryAdapter.this.hasNextPage = true;
                     }
+
                     ParseRecyclerQueryAdapter.this.notifyOnLoadedListeners(list,e);
                 }
             }
         });
-
-        for(Field field  : clazz.getDeclaredFields())
-        {
-            if (field.isAnnotationPresent(ParseName.class))
-            {
-                ParseName annotation = field.getAnnotation(ParseName.class);
-                field.setAccessible(true);
-                fields.put(field,annotation.value());
-
-            }
-        }
     }
 
     @Override

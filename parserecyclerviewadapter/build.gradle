@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "1.0.5"
+version = "1.0.6"
 android {
 
     compileSdkVersion 23
@@ -42,7 +42,7 @@ ext {
     siteUrl = 'https://github.com/JA-VON/ParseRecyclerViewAdapter'
     gitUrl = 'https://github.com/JA-VON/ParseRecyclerViewAdapter'
 
-    libraryVersion = '1.0.5'
+    libraryVersion = '1.0.6'
 
     developerId = 'javondavis'
     developerName = 'Javon Davis'
@@ -51,6 +51,6 @@ ext {
     licenseName = 'The MIT License (MIT)'
     licenseUrl = 'https://opensource.org/licenses/MIT'
     allLicenses = ["MIT"]
-//    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 }
