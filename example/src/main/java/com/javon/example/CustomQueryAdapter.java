@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.javon.parserecyclerviewadapter.ParseRecyclerQueryAdapter;
 import com.parse.ParseObject;
+import com.parse.ParseQueryAdapter;
 
 /**
  * @author Javon Davis
