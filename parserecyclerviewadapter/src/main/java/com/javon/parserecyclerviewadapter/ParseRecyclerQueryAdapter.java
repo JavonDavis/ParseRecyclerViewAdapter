@@ -83,8 +83,24 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
         this.currentPage = 0;
     }
 
+    public T getItem(int index) {
+        return index == this.getPaginationCellRow()?null: this.objects.get(index);
+    }
+
+    public long getItemId(int position) {
+        return (long)position;
+    }
+
+    public int getItemViewType(int position) {
+        return position == this.getPaginationCellRow()?1:0;
+    }
+
     private boolean shouldShowPaginationCell() {
         return this.paginationEnabled && this.objects.size() > 0 && this.hasNextPage;
+    }
+
+    private int getPaginationCellRow() {
+        return this.objects.size();
     }
 
     public void loadNextPage() {
