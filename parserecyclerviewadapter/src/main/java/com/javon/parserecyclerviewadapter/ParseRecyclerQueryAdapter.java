@@ -129,6 +129,7 @@ public class ParseRecyclerQueryAdapter<T extends ParseObject, V extends Recycler
 
         this.notifyOnLoadingListeners();
         query.findInBackground(new FindCallback() {
+
             @Override
             public void done(List list, ParseException e) {
                 if(query.getCachePolicy() != ParseQuery.CachePolicy.CACHE_ONLY || e == null || e.getCode() != 120) {
