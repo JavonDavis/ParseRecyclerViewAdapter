@@ -12,7 +12,7 @@ There are two ways to install ParseRecyclerViewAdapter:
 Simply add:
 
 ```groovy
-compile 'com.javon.parserecyclerviewadapter:parserecyclerviewadapter:1.0.4'
+compile 'com.javon.parserecyclerviewadapter:parserecyclerviewadapter:1.0.7'
 ```
 
 to your project dependencies and run `gradle build` or `gradle assemble`.
