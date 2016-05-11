@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.javon.parseadapter"
@@ -22,6 +22,7 @@ android {
 dependencies {
     compile project(':parserecyclerviewadapter')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.javon.viewmanager:viewmanager:1.0.2'
 }

@@ -21,10 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class
-//                ,"Posts");
-
-        final CustomQueryAdapter mainAdapter = new CustomQueryAdapter(this, DefaultViewHolder.class
+        ParseRecyclerQueryAdapter<ParseObject,DefaultViewHolder> mainAdapter = new ParseRecyclerQueryAdapter<>(this, DefaultViewHolder.class
                 ,new ParseRecyclerQueryAdapter.QueryFactory() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery query = ParseQuery.getQuery("Posts");
@@ -32,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
                 return query;
             }
         });
+
+//        final CustomQueryAdapter mainAdapter = new CustomQueryAdapter(this, DefaultViewHolder.class
+//                ,new ParseRecyclerQueryAdapter.QueryFactory() {
+//            public ParseQuery<ParseObject> create() {
+//                ParseQuery query = ParseQuery.getQuery("Posts");
+//                query.orderByDescending("title");
+//                return query;
+//            }
+//        });
 
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.items);
